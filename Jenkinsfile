@@ -3,19 +3,14 @@ pipeline {
 
     environment {
         DOCKER_IMAGE     = "kreajith2026/argocd-1"
-        DEPLOYMENT_NAME  = "my-java-app"                                
+        DEPLOYMENT_NAME  = "my-java-app"
         GITOPS_REPO      = "github.com/Antony2026-ai/argocd-test.git"
-        MANIFEST_DIR     = "dev"                                       
+        MANIFEST_DIR     = "dev"
         IMAGE_TAG        = "${env.BUILD_NUMBER}"
     }
 
-    options {
-        disableConcurrentBuilds()
-        timeout(time: 20, unit: 'MINUTES')
-        buildDiscarder(logRotator(numToKeepStr: '20'))
-    }
-
     
+    stages {
 
         stage('Checkout') {
             steps {
@@ -56,17 +51,13 @@ pipeline {
                         git clone https://\$GIT_USER:\$GIT_TOKEN@github.com/Antony2026-ai/argocd-test.git
                         cd argocd-test
 
-                        
-
                         kustomize edit set image "${DOCKER_IMAGE}=${DOCKER_IMAGE}:${IMAGE_TAG}"
 
-                       
                         git config user.email "jenkins@ci.com"
                         git config user.name  "Jenkins CI"
 
                         git add "${MANIFEST_DIR}/kustomization.yaml"
 
-                        
                         git commit -m "chore(${DEPLOYMENT_NAME}): image ${IMAGE_TAG}"
                         git push origin main
                     '''
@@ -74,10 +65,9 @@ pipeline {
             }
         }
 
-        
+    }
 
     post {
-        
         success {
             echo "${DEPLOYMENT_NAME}:${IMAGE_TAG} deployed via ArgoCD"
         }
