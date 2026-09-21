@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE     = "kreajith2026/argocd1"
+        DOCKER_IMAGE     = "kreajith2026/argocd-1"
         DEPLOYMENT_NAME  = "my-java-app"                              // ⭐ change per service
         GITOPS_REPO      = "https://github.com/Antony2026-ai/my_small_app_1.git"   
         MANIFEST_PATH    = "dev/deployment.yaml"
