@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE     = "kreajith2026/argocd-1"
         DEPLOYMENT_NAME  = "my-java-app"                              // ⭐ change per service
-        GITOPS_REPO      = "https://github.com/Antony2026-ai/my_small_app_1.git"   
+        GITOPS_REPO      = "github.com/Antony2026-ai/argocd-test.git"   
         MANIFEST_PATH    = "dev/deployment.yaml"
         IMAGE_TAG        = "${env.BUILD_NUMBER}"
     }
