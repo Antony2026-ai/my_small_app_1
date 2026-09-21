@@ -39,31 +39,31 @@ pipeline {
         }
 
         stage('Update K8s Manifest') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'github-creds',
-                    usernameVariable: 'GIT_USER',
-                    passwordVariable: 'GIT_TOKEN')]) {
-                    sh '''
-                        set -e
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'github-creds',
+            usernameVariable: 'GIT_USER',
+            passwordVariable: 'GIT_TOKEN')]) {
+            sh '''
+                set -e
 
-                        rm -rf argocd-test
-                        git clone https://\$GIT_USER:\$GIT_TOKEN@github.com/Antony2026-ai/argocd-test.git
-                        cd argocd-test
+                rm -rf argocd-test
+                git clone https://\$GIT_USER:\$GIT_TOKEN@github.com/Antony2026-ai/argocd-test.git
+                cd argocd-test/${MANIFEST_DIR}
 
-                        kustomize edit set image "${DOCKER_IMAGE}=${DOCKER_IMAGE}:${IMAGE_TAG}"
+                kustomize edit set image "${DOCKER_IMAGE}=${DOCKER_IMAGE}:${IMAGE_TAG}"
 
-                        git config user.email "jenkins@ci.com"
-                        git config user.name  "Jenkins CI"
+                git config user.email "jenkins@ci.com"
+                git config user.name  "Jenkins CI"
 
-                        git add "${MANIFEST_DIR}/kustomization.yaml"
+                git add "kustomization.yaml"
 
-                        git commit -m "chore(${DEPLOYMENT_NAME}): image ${IMAGE_TAG}"
-                        git push origin main
-                    '''
-                }
-            }
+                git commit -m "chore(${DEPLOYMENT_NAME}): image ${IMAGE_TAG}"
+                git push origin main
+            '''
         }
+    }
+}
 
     }
 
