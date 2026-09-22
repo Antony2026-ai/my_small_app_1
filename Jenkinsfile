@@ -58,7 +58,7 @@ pipeline {
 
                 git add "kustomization.yaml"
 
-                git commit -m "chore(${DEPLOYMENT_NAME}): image ${IMAGE_TAG}"
+                git commit -m "Update ${DEPLOYMENT_NAME} image to ${DOCKER_IMAGE}:${IMAGE_TAG}"
                 git push origin main
             '''
         }
